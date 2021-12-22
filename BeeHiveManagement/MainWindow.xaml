@@ -20,7 +20,7 @@
 
         <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="20">
             <ComboBox x:Name="jobSelector" FontSize="18" SelectedIndex="0" Margin="0,0,0,20">
-                <ListBoxItem Content="Nector Collector"/>
+                <ListBoxItem Content="Nectar Collector"/>
                 <ListBoxItem Content="Honey Manufacturer"/>
                 <ListBoxItem Content="Egg Care"/>
             </ComboBox>
