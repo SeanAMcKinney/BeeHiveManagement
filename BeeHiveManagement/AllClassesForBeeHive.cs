@@ -50,9 +50,9 @@ namespace BeeHiveManagement
         }
     }
 
-    class Bee
+    abstract class Bee
     {
-        public virtual float CostPerShift { get; }
+        public abstract float CostPerShift { get; } //changed property to abstract from virtual
 
         public string Job { get; private set; }
 
@@ -69,7 +69,7 @@ namespace BeeHiveManagement
             }
         }
 
-        protected virtual void DoJob() { /* the subclass overrides this */ }
+        protected abstract void DoJob(); //Removed body of method
     }
 
     class Queen : Bee
