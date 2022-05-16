@@ -50,7 +50,13 @@ namespace BeeHiveManagement
         }
     }
 
-    abstract class Bee
+    interface IWorker
+    {
+        string Job { get; }
+        void WorkTheNextShift();
+    }
+
+    abstract class Bee : IWorker
     {
         public abstract float CostPerShift { get; } //changed property to abstract from virtual
 
@@ -77,7 +83,7 @@ namespace BeeHiveManagement
         public const float EGGS_PER_SHIFT = 0.45f;
         public const float HONEY_PER_UNASSIGNED_WORKER = 0.5f;
 
-        private Bee[] workers = new Bee[0];
+        private IWorker[] workers = new IWorker[0];
         private float eggs = 0;
         private float unassignedWorkers = 4;
 
@@ -91,7 +97,7 @@ namespace BeeHiveManagement
             AssignBee("Egg Care");
         }
 
-        private void AddWorker(Bee worker)
+        private void AddWorker(IWorker worker)
         ///<summary>
         ///Expand the workers array by one slot and add a Bee reference.
         ///<summary>
@@ -126,7 +132,7 @@ namespace BeeHiveManagement
         private string WorkerStatus(string job)
         {
             int count = 0;
-            foreach (Bee worker in workers)
+            foreach (IWorker worker in workers)
                 if (worker.Job == job) count++;
             string s = "s";
             if (count == 1) s = "";
