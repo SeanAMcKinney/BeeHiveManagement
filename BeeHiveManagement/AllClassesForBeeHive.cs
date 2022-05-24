@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace BeeHiveManagement
 {
@@ -50,11 +52,20 @@ namespace BeeHiveManagement
         }
     }
 
+    //Interfaces
+
     interface IWorker
     {
         string Job { get; }
         void WorkTheNextShift();
     }
+
+    interface IDefender : IWorker
+    {
+        void DefendHive();
+    }
+
+    //Classes
 
     abstract class Bee : IWorker
     {
@@ -78,7 +89,7 @@ namespace BeeHiveManagement
         protected abstract void DoJob(); //Removed body of method
     }
 
-    class Queen : Bee
+    class Queen : Bee, INotifyPropertyChanged
     {
         public const float EGGS_PER_SHIFT = 0.45f;
         public const float HONEY_PER_UNASSIGNED_WORKER = 0.5f;
@@ -86,6 +97,13 @@ namespace BeeHiveManagement
         private IWorker[] workers = new IWorker[0];
         private float eggs = 0;
         private float unassignedWorkers = 4;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
 
         public string StatusReport { get; private set; }
         public override float CostPerShift { get { return 2.15f; } }
@@ -118,6 +136,7 @@ namespace BeeHiveManagement
             $"\nEgg Count: {eggs:0.0}\nUnassigned workers: {unassignedWorkers:0.0}\n" +
             $"{WorkerStatus("Nectar Collector")}\n{WorkerStatus("Honey Manufacturer")}" +
             $"\n{WorkerStatus("Egg Care")}\nTOTAL WORKERS: {workers.Length}";
+            OnPropertyChanged("StatusReport");
         }
 
         public void CareForEggs(float eggsToConvert)
